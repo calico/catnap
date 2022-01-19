@@ -1,6 +1,6 @@
 # Overview
 
-This is the code needed to reproduce the results from the paper "Automated, high-dimensional evaluation of 
+This repository contains code for reproducing the results of our paper "Automated, high-dimensional evaluation of 
 physiological aging and resilience in outbred mice."
 
 ## Structure
