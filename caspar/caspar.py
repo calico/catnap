@@ -169,4 +169,4 @@ def xgb_train(
         evals=[(dtrain, "train"), (dtest, "test")],
         verbose_eval=verbose_eval,
     )
-    return caspar_model
+    return caspar_model, current_eval_results

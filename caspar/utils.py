@@ -1,4 +1,3 @@
-import functools
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
@@ -36,10 +35,12 @@ def get_bounds(trace_meta, mouse_meta):
     trace_mouse_ids = trace_meta["mouse_id"].values
     is_dead = mouse_meta.loc[trace_mouse_ids]["is_dead"].values
     date_of_birth = mouse_meta.loc[trace_mouse_ids]["date_of_birth"]
+    age_at_death = mouse_meta.loc[trace_mouse_ids]["age_at_death"]
     last_recorded_date = (
         mouse_meta.loc[trace_mouse_ids]["last_recorded_date"]
-                  .astype(np.datetime64).values)
-    survival_time = (last_recorded_date - date_of_birth).dt.days.values
+                  .astype(np.datetime64))
+    survival_time = age_at_death.combine_first(
+            (last_recorded_date - date_of_birth).dt.days).values
     survival_time[~is_dead] *= -1
     age = trace_meta["age"].values
     return trace_mouse_ids, age, survival_time

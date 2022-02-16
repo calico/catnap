@@ -38,7 +38,7 @@ def make_age_group(age_in_months, interval=3, max_age=33):
 
 
 def make_trace_metadata(complete_df, mouse_df):
-    """Compute trace metadata such as age at run etc."""
+    """Compute per-trace metadata such as age at run etc."""
     def _get_run_number(trace_id):
         run_number = int(trace_id.split('_')[-1])
         return run_number
@@ -89,8 +89,7 @@ def add_trace_meta(df, trace_meta_df):
 
 
 def add_derived_features(complete_df, trace_meta_df):
-    """ Make base features from 3-minute resolution level data.
-    """
+    """ Make base features from 3-minute resolution level data."""
     state_dummies = pd.get_dummies(
         complete_df['states'], prefix='state-', prefix_sep='')
     complete_df = pd.concat([complete_df, state_dummies], axis=1)
@@ -114,6 +113,7 @@ def add_derived_features(complete_df, trace_meta_df):
 
 
 def make_hourly_average_df(complete_df):
+    """ Make hourly-average features from 3-minute resolution level data."""
     hourly_df = complete_df.copy()
 
     def _round_dwn_to_hour(t):
@@ -128,6 +128,12 @@ def make_hourly_average_df(complete_df):
 
 
 def make_time_window_and_lights_on_off_ratio_dfs(complete_df):
+    """ Make time window features from 3-minute resolution level data.
+
+    These features include:
+        - Averages per 4 hour time bin
+        - Ratio of averages of 4 hour bins before / after lights on / off
+    """
     time_window_df = complete_df.copy()
 
     def _subset_time_window(time_window_df, time_window):
@@ -181,6 +187,7 @@ def make_time_window_and_lights_on_off_ratio_dfs(complete_df):
 
 
 def make_trace_total_and_average_dfs(complete_df):
+    """ Make per-trace average features from 3-minute resolution level data."""
     trace_average_df = complete_df.copy()
 
     def _aggregate_by_day(df, agg_features, reduce_fn):
@@ -211,6 +218,7 @@ def make_trace_total_and_average_dfs(complete_df):
 
 
 def make_state_means_df(complete_df):
+    """ Make per-state average features from 3-minute resolution level data."""
     state_means_df = complete_df.copy()
     state_means_df = (state_means_df.groupby(['trace_id', 'states'])
                       [BASE_FEATURES].mean())
@@ -222,6 +230,12 @@ def make_state_means_df(complete_df):
 
 
 def make_circadian_means_and_ratio_dfs(complete_df):
+    """ Make circadian agg features from 3-minute resolution level data.
+
+    These features include:
+        - Means for each circadian period (light / dark)
+        - Ratio of circadian means
+    """
     circadian_means_df = complete_df.copy()
     circadian_means_df = (circadian_means_df
                           .groupby(['day_night', 'trace_id'])[BASE_FEATURES]
@@ -235,6 +249,18 @@ def make_circadian_means_and_ratio_dfs(complete_df):
 
 
 def compute_window_stats(data, indicator_fn, name):
+    """ Computes activity window features from indicator function.
+
+    Indicator function should be a function that takes in a row
+    representing a 3 minute window of data and returns a boolean
+    determining if that time period belongs to an activity period
+    (e.g., feeding, sleeping, high activity).
+
+    This function then computes:
+        - The number of activity windows
+        - Median length and interval between activity windows
+        - (Robust) max length and interval between activity windows
+    """
     index = ['num period', 'median period', 'median interval', 'max period',
              'max interval']
     index = [name + ' ' + col for col in index]
@@ -276,6 +302,7 @@ def compute_window_stats(data, indicator_fn, name):
 
 
 def make_window_stats_df(complete_df, columns, indicator_fn, name):
+    """ Computes activity window features per day in the met cage."""
     map_fn = functools.partial(
         compute_window_stats, indicator_fn=indicator_fn, name=name)
     complete_df = complete_df[complete_df['part_of_complete_day']]
@@ -308,6 +335,7 @@ def make_exercising_window_stats_df(complete_df):
 
 
 def generate_all_feature_dfs(complete_df, mouse_df):
+    """ Generates all features and smoothes per-trace features."""
     trace_meta_df = make_trace_metadata(complete_df, mouse_df)
     complete_df = add_derived_features(complete_df, trace_meta_df)
 

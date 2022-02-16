@@ -59,19 +59,25 @@ def load_dataframes(db_name, ignore_cache=False):
     dataframes = {}
     for table in tables:
         table_name = table[0]
-        dataframes[table_name] = pd.read_sql("SELECT * from " + table_name, con=c)
+        dataframes[table_name] = pd.read_sql(
+                "SELECT * from " + table_name, con=c)
         elapsed = time.time() - start
         print("Loaded table %s, (%0.2s elapsed)" % (table, elapsed))
     print(time.time() - start)
 
     dataframes["mouse"] = dataframes["mouse"].set_index("mouse_id")
 
-    mouse_id2generation = dataframes["mouse"].home_cage.apply(lambda x: x.split("-")[0])
+    mouse_id2generation = dataframes["mouse"].home_cage.apply(
+            lambda x: x.split("-")[0])
     mouse_id2generation.name = "generation"
     dataframes["mouse"].loc[:, "generation"] = mouse_id2generation.values
 
     is_dead = ~dataframes["mouse"].date_of_death.isnull()
     dataframes["mouse"].loc[:, "is_dead"] = is_dead
+    date_of_birth = dataframes["mouse"]["date_of_birth"]
+    date_of_death = dataframes["mouse"]["date_of_death"]
+    dataframes["mouse"].loc[:, "age_at_death"] = (
+        date_of_death - date_of_birth).dt.days
 
     last_recorded_date = (
         dataframes["complete"]
