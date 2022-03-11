@@ -52,7 +52,7 @@ def caspar_loss(
     loglikelihood = 0
     loglikelihood += jnp.sum(jnp.log(uncensored_likelihood + 1e-12))
     loglikelihood += log_beta_prob
-    return -loglikelihood
+    return -1 * loglikelihood
 
 
 def make_objective_and_metric_function(
