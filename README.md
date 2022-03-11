@@ -10,7 +10,7 @@ cage into a per-run / per-trace feature matrix which we use for most of the resu
 
 `caspar` contains the code for the Combined Age and Survival Prediction of Aging Rate (CASPAR) model - a regression
 model that combines both chronological age and mortality data as signals and takes advantage of longitudinal
-measurements. A standalone version of CASPAR containing only the general purpose model is found at <link>.
+measurements. A standalone version of CASPAR containing only the general purpose model will be release shortly.
 
 `network` contains the code to reproduce our results on applying Time Varying Graph Lasso (TVGL) and the nonparanormal
 SKEPTIC estimator to infer a sparse time-varying graphical model on our data and to run consensus (spectral) clustering
