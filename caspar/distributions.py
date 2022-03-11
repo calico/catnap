@@ -55,6 +55,8 @@ def make_left_truncated_pdf_from_cdf(cdf_fn):
 def make_hierarchical_logbeta_prior_log_pdf(beta_0, tau, sigma):
     def _log_pdf(beta, mouse_indicators):
         n = jnp.sum(mouse_indicators, axis=0)
+        if n == 0:
+            raise ValueError('Some mice have no traces') 
         mean_beta = beta.dot(mouse_indicators)
         mean_beta = mean_beta / n
         first_term = -(beta ** 2) / (2 * sigma ** 2)
