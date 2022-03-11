@@ -3,6 +3,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 import xgboost as xgb
 
+MAX_AGE = 33
 
 def make_feature_matrices(trace_features, train_trace_ids, test_trace_ids):
     train_features = trace_features.loc[train_trace_ids]
@@ -14,7 +15,7 @@ def make_feature_matrices(trace_features, train_trace_ids, test_trace_ids):
 
 def make_splits(trace_features, trace_meta, mouse_meta, random_state=0):
     mouse_ids = trace_meta["mouse_id"].unique()
-    trace_meta = trace_meta[trace_meta["age_in_months"].between(0, 33)]
+    trace_meta = trace_meta[trace_meta["age_in_months"].between(0, MAX_AGE)]
     mouse_generation = mouse_meta.loc[mouse_ids]["generation"].values
     train_mouse_ids, test_mouse_ids = train_test_split(
         mouse_ids, stratify=mouse_generation, test_size=0.1,
