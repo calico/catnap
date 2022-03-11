@@ -93,7 +93,6 @@ def add_derived_features(complete_df, trace_meta_df):
     state_dummies = pd.get_dummies(
         complete_df['states'], prefix='state-', prefix_sep='')
     complete_df = pd.concat([complete_df, state_dummies], axis=1)
-    # complete_df = complete_df.drop('level_0', axis=1)
     complete_df = complete_df[
         (complete_df['trace_id'].isin(trace_meta_df.index)).values
     ]
