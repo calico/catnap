@@ -16,3 +16,19 @@ measurements. A standalone version of CASPAR containing only the general purpose
 SKEPTIC estimator to infer a sparse time-varying graphical model on our data and to run consensus (spectral) clustering
 on the inferred networks as described in our paper.
 
+`data` contains per-run feature data in HDF format. Features are namespaced by keys. Important keys include per-mouse metadata (`mouse metadata`), per-run metadata (`trace metadata`) and all per-trace features (`all features`). You will require `git-lfs` to download the data.
+
+To access specific subsets of features / keys, you can use the short snippet below:
+
+```
+def read_results_from_h5(filename, keys=None):
+  if keys is None:
+    f = h5py.File(filename, 'r')    
+    keys = list(f.keys())
+  result = {}
+  for key in keys:
+    result[key] = pd.read_hdf(filename, key=key)
+  return result
+```
+
+Where `filename` points to the location of the `trace_features.h5` file.
