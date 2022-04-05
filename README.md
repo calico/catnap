@@ -1,7 +1,8 @@
 # Overview
 
 This repository contains code for reproducing the results of our paper "Automated, high-dimensional evaluation of 
-physiological aging and resilience in outbred mice."
+physiological aging and resilience in outbred mice." (DOI: https://doi.org/10.7554/eLife.72664110e72664)
+
 
 ## Structure
 
