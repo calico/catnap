@@ -2,7 +2,7 @@ cryptography==2.7
 configparser==3.7.4
 Cython==0.29.12
 ecos==2.0.7.post1
-Flask==1.1.1
+Flask==2.3.2
 funcsigs==1.0.2
 functools32==3.2.3.post2
 future==0.17.1
