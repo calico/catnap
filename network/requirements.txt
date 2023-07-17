@@ -5,7 +5,7 @@ ecos==2.0.7.post1
 Flask==1.1.1
 funcsigs==1.0.2
 functools32==3.2.3.post2
-future==0.17.1
+future==0.18.3
 futures==3.3.0
 gevent==1.4.0
 glmnet-py==0.1.0b2
