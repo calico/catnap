@@ -9,7 +9,7 @@ future==0.17.1
 futures==3.3.0
 gevent==1.4.0
 glmnet-py==0.1.0b2
-joblib==0.14.1
+joblib==1.2.0
 jsonschema==3.0.1
 keyring==18.0.0
 matplotlib==2.2.3
