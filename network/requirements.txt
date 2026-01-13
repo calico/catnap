@@ -26,7 +26,7 @@ scipy==1.2.1
 seaborn==0.9.0
 tables
 tqdm==4.32.1
-cvxopt==1.2.5
+cvxopt==1.2.7
 scs==2.1.4
 cvxpy==0.4.0
 snap-stanford===5.0.0
